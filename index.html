@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MaterialBank Prototype</title>
+<style>
+:root{--g:#22704c;--p:#eff6f2;--d:#1b2b25;--m:#66756e;--o:#d38537;--w:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f7faf8;color:var(--d)}
+.app{max-width:1180px;margin:24px auto;background:#fff;border:1px solid #dbe3de;border-radius:18px;overflow:hidden;box-shadow:0 12px 35px #173d2914}
+header{background:var(--g);color:#fff;padding:22px 28px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:26px;font-weight:800}.tag{font-size:13px;opacity:.9}
+nav{display:flex;gap:6px;background:#f0f5f2;padding:10px 16px;border-bottom:1px solid #dbe3de;flex-wrap:wrap}
+nav button{border:0;background:transparent;padding:10px 14px;border-radius:9px;font-weight:700;color:var(--m);cursor:pointer}
+nav button.active{background:var(--p);color:var(--g)}
+main{padding:28px}.screen{display:none}.screen.active{display:block}
+h1{font-size:30px;margin:0 0 8px}h2{margin:0 0 10px}.sub{color:var(--m);margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+.card{background:#fff;border:1px solid #dbe3de;border-radius:14px;padding:18px}.soft{background:var(--p);border:0}
+.stat{font-size:30px;font-weight:800;color:var(--g)}.label{color:var(--m);font-size:13px}
+.material{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:#e1efe7;color:var(--g);font-size:12px;font-weight:700}
+.pill.o{background:#fff0df;color:#a45d18}.btn{border:0;background:var(--g);color:#fff;padding:11px 15px;border-radius:9px;font-weight:700;cursor:pointer}.btn.alt{background:#edf3ef;color:var(--g)}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cfdad4;border-radius:8px;margin-top:6px;margin-bottom:14px;font:inherit}
+label{font-size:13px;font-weight:700}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.passport{border:2px dashed #79a88f;padding:22px;border-radius:16px;background:#fbfefc}.qr{width:110px;height:110px;background:repeating-linear-gradient(45deg,#1b2b25 0 5px,#fff 5px 10px);border:8px solid #fff;box-shadow:0 0 0 1px #ccd8d1}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}.step{background:var(--p);padding:14px;border-radius:10px;text-align:center;font-size:12px;font-weight:700}.step b{display:block;color:var(--g);font-size:18px;margin-bottom:5px}
+.toast{position:fixed;right:24px;bottom:24px;background:var(--d);color:#fff;padding:14px 18px;border-radius:10px;display:none}
+@media(max-width:800px){.grid,.grid2,.row,.steps{grid-template-columns:1fr}.app{margin:0;border-radius:0}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div><div class="logo">MaterialBank</div><div class="tag">Connect • Recover • Reuse • Repeat</div></div><div class="tag">Prototype • Campus Pilot</div></header>
+<nav>
+<button class="active" onclick="show('dash',this)">Dashboard</button>
+<button onclick="show('list',this)">List Material</button>
+<button onclick="show('find',this)">Find Material</button>
+<button onclick="show('passport',this)">Material Passport</button>
+</nav>
+<main>
+<section id="dash" class="screen active">
+<h1>Resource recovery, before disposal.</h1><div class="sub">A simple prototype showing how surplus materials can move from supplier → verified listing → new user.</div>
+<div class="grid">
+<div class="card soft"><div class="stat">28</div><div class="label">Materials listed</div></div>
+<div class="card soft"><div class="stat">17</div><div class="label">Successful matches</div></div>
+<div class="card soft"><div class="stat">642 kg</div><div class="label">Material reused</div></div>
+</div>
+<div class="steps">
+<div class="step"><b>01</b>List</div><div class="step"><b>02</b>Verify</div><div class="step"><b>03</b>Passport</div><div class="step"><b>04</b>Match</div><div class="step"><b>05</b>Reuse</div>
+</div>
+<div class="grid2">
+<div class="card"><h2>Recent materials</h2>
+<div class="card soft material"><div><b>Clean cotton scraps</b><br><span class="label">250 kg • Textile • Chennai</span></div><span class="pill">Available</span></div><br>
+<div class="card soft material"><div><b>Wood offcuts</b><br><span class="label">80 kg • Workshop • Campus</span></div><span class="pill">Matched</span></div>
+</div>
+<div class="card"><h2>Why it matters</h2><p>One organization’s surplus can become another organization’s input. MaterialBank creates the connection and records enough information to support responsible reuse.</p><button class="btn" onclick="show('list',document.querySelectorAll('nav button')[1])">List a material</button></div>
+</div>
+</section>
+
+<section id="list" class="screen">
+<h1>List surplus material</h1><div class="sub">Prototype flow for a supplier or institution.</div>
+<div class="grid2">
+<div class="card">
+<label>Material name</label><input id="mat" placeholder="e.g., Cotton textile scraps">
+<div class="row"><div><label>Category</label><select><option>Textile</option><option>Wood</option><option>Cardboard</option><option>Other</option></select></div><div><label>Quantity</label><input placeholder="e.g., 250 kg"></div></div>
+<div class="row"><div><label>Condition</label><select><option>Good</option><option>Usable</option><option>Needs inspection</option></select></div><div><label>Location</label><input placeholder="e.g., Campus / Chennai"></div></div>
+<label>Potential use</label><textarea placeholder="e.g., stuffing, prototypes, recycled textile..."></textarea>
+<button class="btn" onclick="createPassport()">Submit for verification</button>
+</div>
+<div class="card soft"><h2>What happens next?</h2><p><b>1. Review</b><br>Basic safety and acceptance checks.</p><p><b>2. Material Passport</b><br>A unique ID is generated.</p><p><b>3. Discovery</b><br>Potential users can request the material.</p><p><b>4. Reuse</b><br>Pickup/delivery is coordinated.</p></div>
+</div>
+</section>
+
+<section id="find" class="screen">
+<h1>Find material</h1><div class="sub">A user searches for an input instead of buying new material.</div>
+<div class="row"><input placeholder="Search: wood, fabric, cardboard..."><select><option>Any location</option><option>Within 10 km</option><option>Within 50 km</option></select></div>
+<div class="grid">
+<div class="card"><span class="pill">Available</span><h2>Wood offcuts</h2><p>80 kg • Good condition</p><p class="label">Campus workshop • 3 km away</p><button class="btn" onclick="requestMaterial('Wood offcuts')">Request material</button></div>
+<div class="card"><span class="pill">Available</span><h2>Cotton textile scraps</h2><p>250 kg • Good condition</p><p class="label">Textile unit • 7 km away</p><button class="btn" onclick="requestMaterial('Cotton textile scraps')">Request material</button></div>
+<div class="card"><span class="pill o">Inspection</span><h2>Cardboard sheets</h2><p>120 kg • Needs inspection</p><p class="label">Packaging unit • 11 km away</p><button class="btn alt" onclick="alert('Inspection required before request.')">View details</button></div>
+</div>
+</section>
+
+<section id="passport" class="screen">
+<h1>Material Passport</h1><div class="sub">A traceable identity for a reusable material.</div>
+<div class="passport">
+<div style="display:flex;justify-content:space-between;gap:20px">
+<div><span class="pill">VERIFIED • AVAILABLE</span><h2 style="margin-top:14px">MB-TEX-0251</h2>
+<p><b>Material:</b> Cotton textile scrap</p><p><b>Quantity:</b> 250 kg</p><p><b>Source:</b> Textile manufacturer</p><p><b>Condition:</b> Good</p><p><b>Potential uses:</b> Recycled textile, insulation, stuffing</p><p><b>Listed:</b> 23 Sep 2026</p></div><div class="qr" title="QR placeholder"></div>
+</div></div>
+<br><div class="grid">
+<div class="card soft"><b>Traceability</b><p class="label">Source and reuse history can be recorded.</p></div>
+<div class="card soft"><b>Suitability</b><p class="label">Condition and potential applications are disclosed.</p></div>
+<div class="card soft"><b>Trust</b><p class="label">Verification status is visible before a request.</p></div>
+</div>
+</section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+function show(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',2500)}
+function createPassport(){let n=document.getElementById('mat').value.trim()||'New material';toast('Submitted: '+n+' • Verification started');setTimeout(()=>show('passport',document.querySelectorAll('nav button')[3]),600)}
+function requestMaterial(n){toast('Request sent for '+n)}
+</script>
+</body>
+</html>
